@@ -15,7 +15,7 @@ body{
     align-content: center;
     justify-items: center;
     min-height: 80px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     
     font-family: Arial, Helvetica, sans-serif;
     font-size: 30px;
@@ -25,58 +25,96 @@ body{
     box-shadow: 5px 5px 5px rgb(187, 187, 194);
 }
 
-
-
-#difficulty{
-    display: grid;
-    align-content: center;
-    justify-items: center;
-    min-height: 125px;
-  
-}
-
-#difficulty_title{
-    min-height: 20px;
-    font-size: 25px;
-}
-
-#difficulty_buttons{
+#game_settings{
     display: flex;
-    gap: 10px;  
-    margin: 5px;
+    min-height: 30px;
+    width: 500px;
+    margin: auto auto;
+   
 }
 
-#difficulty_buttons button{
+#difficulty_setting{
+    display: grid;
+    grid-template-columns: auto auto;
+    width: calc(100% / 3);
+    align-items: center;
+}
+
+#difficulty_lable{
+    border: 1px solid black;
     height: 25px;
-    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }
 
-#gen_puzzle button{
+.dropdown{
+    display: inline;
+}
+
+.dropdown button{
+   
+}
+
+#difficulty_dropdown_button{
+    width:75px;
     height: 25px;
-    min-width: 320px;
+    border: 1px solid black;
+    background-color: whitesmoke;
 }
 
-#gen_puzzle button:hover{
-   background-color: rgb(149, 149, 156);
-   color: white;
+.dropdown .dropdown_options{
+    display:none;
+    position: absolute;
 }
 
-.difficulty_selected{
-    background-color: rgb(149, 149, 156);
-    border-color: black;
-    color: white;
+.dropdown .dropdown_options button{
+    display: block;
+    width: 75px;
+    height: 25px;
+    
+}
+
+.dropdown:hover .dropdown_options{
+    display: block;
+    width: 75px;
+    
+    background-color: lightgrey;
+}
+
+#generate_game{
+    width: calc(100% / 3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#generate_game button{
+    height: 25px;
+    width: 80%;
+    border: 1px solid black;
 }
 
 #autocheck{
-    margin-top: 5px;
+    width: calc(100% / 3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#autocheck button{
-    width: 50px;
-    height: 20px;
+#autocheck_lable{
+
 }
 
-.autocheck_active{
+.autocheck_btn{
+    height: 25px;
+    width: 30px;
+    border: 1px solid black;
+    margin-left: 5px;
+}
+
+.autocheck_btn_active{
     background-color: rgb(149, 149, 156);
     border-color: black;
     color: white;
@@ -90,31 +128,14 @@ body{
 
 }
 
-
-
-#difficulty_setting{
-    width: 33%;
-}
-
-#generate_game{
-    width: 33%;
-}
-
-#autocheck{
-    width: 33%;
-}
-
 #board{
     display: grid;
     grid-template-columns: repeat(9,1fr);
-    /* flex-wrap: wrap; */
-    
-    /* min-width: 450px; */
+
     height: 92%;
-    /* width: 100%; */
     aspect-ratio: 1/1;
     
-    margin:20px auto;
+    margin:10px auto;
     border: 1px solid black;
     justify-content: center;
     align-items: center;

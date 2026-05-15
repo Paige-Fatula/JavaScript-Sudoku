@@ -13,23 +13,30 @@
     <div id="sudoku_title"> 
         <h1>Sudoku</h1>
     </div>
-    
-    <div id="difficulty"> 
-        <h1 id="difficulty_title">
-            Difficulty
-        </h1>
-        <div id="difficulty_buttons"> 
-            <button id="easy_difficulty" class="difficulty_selected">Easy</button>
-            <button id="normal_difficulty">Normal</button>
-            <button id="hard_difficulty">Hard</button>
+
+    <div id="game_settings">
+
+        <div id="difficulty_setting">
+            <label id="difficulty_lable">Difficulty</label>
+
+            <div class="dropdown">
+                <button id="difficulty_dropdown_button">Easy</button>
+                <div class="dropdown_options" id="difficulty_options">
+                    <button onclick="set_difficulty('Easy')">Easy</button>
+                    <button onclick="set_difficulty('Medium')">Medium</button>
+                    <button onclick="set_difficulty('Hard')">Hard</button>
+                </div>
+            </div>
         </div>
-        <div id="gen_puzzle"> 
+
+        <div id="generate_game">
             <button onclick="newPuzzle()">Generate Puzzle</button>
         </div>
+
         <div id="autocheck">
-            <lable>Autocheck:   </lable>
-            <button id="autocheck_on" class="autocheck_active"> on </button>
-            <button id="autocheck_off"> off </button>
+            <label id="autocheck_lable">Autocheck</label>
+            <button id="autocheck_on" class="autocheck_btn" onclick="set_autocheck(1)">On</button>
+            <button id="autocheck_off" class="autocheck_btn" onclick="set_autocheck(0)">Off</button>
         </div>
     </div>
     

@@ -5,7 +5,7 @@
     - add number highlight (highlight all cells of the same number)
     - add win screen
     - unhighlight cell when clicking off board
-    - add tab icon
+
 */
 
 
@@ -13,8 +13,8 @@ let cell_on = null;
 let autocheck = true; 
 let difficulty = 0;
 
-const btnDifficultyList = document.querySelectorAll('#difficulty_buttons button');
-const btnAutoCheck = document.querySelectorAll("#autocheck button");
+// const btnDifficultyList = document.querySelectorAll('#difficulty_buttons button');
+// const btnAutoCheck = document.querySelectorAll("#autocheck button");
 
 var board = [
     ['-','-','-','-','-','-','-','-','-'],
@@ -55,6 +55,11 @@ var empty_board = [
 
 window.onload = function(){
     newPuzzle();
+    align_settings_with_board();
+}
+
+window.onresize = function(){
+    align_settings_with_board();
 }
 
 document.addEventListener('keyup', event => {
@@ -86,6 +91,12 @@ document.addEventListener('keyup', event => {
     }
 });
 
+
+/************************************************************************************************************************************
+    functions related to creating sudoku game
+
+*************************************************************************************************************************************/ 
+
 function remove_old_puzzle(){
     console.log("remove puzzle")
     for(i = 0; i < 9; i++){
@@ -97,7 +108,6 @@ function remove_old_puzzle(){
         }
     }
 }
-
 
 function solved(tmp_board){
     return false;
@@ -240,8 +250,20 @@ function remove_tiles(tmp_board){
     return tmp_board;
 }
 
+function set_boards_equal(s_board,b_board){
+    for(let i = 0; i < 9; i++){
+        for(let j = 0; j < 9; j++){
+            b_board[i][j] = s_board[i][j];
+        }
+    }
+}
+
+/************************************************************************************************************************************
+    functions related to html display
+
+*************************************************************************************************************************************/ 
+
 function setGame(){
-    
     for (let i = 0; i < 9; i++){1
         for (let j = 0; j < 9; j++){
             let cell = document.createElement("div");
@@ -275,19 +297,8 @@ function setGame(){
         }
     }
 }
-function set_boards_equal(s_board,b_board){
-    for(let i = 0; i < 9; i++){
-        for(let j = 0; j < 9; j++){
-            b_board[i][j] = s_board[i][j];
-        }
-    }
-}
-function newPuzzle(){
-    /// randomly place numbers in grid 
-    /// check if puzzle is solvable 
-    /// randomly remove corisonding 
-    /// calculate number of itterations it takes to solve
 
+function newPuzzle(){
     remove_old_puzzle()
     generatePuzzle(solution,[]);
     set_boards_equal(solution,board);
@@ -295,39 +306,59 @@ function newPuzzle(){
     setGame();
 }
 
-btnDifficultyList.forEach(btnEL => {
-    btnEL.addEventListener('click',() => {
-        document.querySelector('.difficulty_selected')?.classList.remove('difficulty_selected');
-        btnEL.classList.add('difficulty_selected');
-        if(btnEL.id == "easy_difficulty"){
+function set_difficulty(level){
+    document.getElementById("difficulty_dropdown_button").innerText = level;
+    switch(level){
+        case "Easy":
             difficulty = 0;
-        }
-        else if (btnEL.id == "normal_difficulty"){
+            break;
+        case "Medium":
             difficulty = 1;
-        }
-        else {
+            break;
+        case "Hard":
             difficulty = 2;
-        }
-    });
-});
+            break;
+        default:
+            difficulty = 0;
+            break; 
+    }
+}
 
-btnAutoCheck.forEach(btnEL => {
-    btnEL.addEventListener('click', () => {
-        document.querySelector('.autocheck_active')?.classList.remove('autocheck_active');
-        btnEL.classList.add('autocheck_active');
-        if (btnEL.id == "autocheck_on"){
-            autocheck = true;
-            check_puzzle();
+function set_autocheck(setting){
+    if(setting){
+        document.getElementById("autocheck_on").classList.add('autocheck_btn_active');
+        document.getElementById("autocheck_off").classList.remove('autocheck_btn_active');
+        autocheck = true;
+        check_puzzle();
+    }
+    else{
+        document.getElementById("autocheck_off").classList.add('autocheck_btn_active');
+        document.getElementById("autocheck_on").classList.remove('autocheck_btn_active');
+        autocheck = false;
+        let tmpList = document.querySelectorAll(".wrong")
+        for (let i = 0; i < tmpList.length; i++){
+            tmpList[i].classList.remove("wrong");
         }
-        else{
-            autocheck = false;
-            let tmpList = document.querySelectorAll(".wrong")
-            for (let i = 0; i < tmpList.length; i++){
-                tmpList[i].classList.remove("wrong");
-            }
-        }
-    })
-})
+    }
+}
+
+// btnAutoCheck.forEach(btnEL => {
+//     btnEL.addEventListener('click', () => {
+//         document.querySelector('.autocheck_active')?.classList.remove('autocheck_active');
+//         btnEL.classList.add('autocheck_active');
+//         if (btnEL.id == "autocheck_on"){
+//             autocheck = true;
+//             check_puzzle();
+//         }
+//         else{
+//             autocheck = false;
+//             let tmpList = document.querySelectorAll(".wrong")
+//             for (let i = 0; i < tmpList.length; i++){
+//                 tmpList[i].classList.remove("wrong");
+//             }
+//         }
+//     })
+// })
 
 function selectCell(){
     document.querySelector(".highlighted_cell")?.classList.remove("highlighted_cell");
@@ -398,3 +429,8 @@ function move_highlight(direction){
     }
 }
 
+function align_settings_with_board(){
+    let cell_width = document.getElementById("0-0").clientWidth;
+    let board_width = cell_width*9;
+    document.getElementById("game_settings").style.width = board_width.toString() + 'px';
+}
