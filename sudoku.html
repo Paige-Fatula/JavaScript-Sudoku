@@ -35,15 +35,29 @@
 
         <div id="autocheck">
             <label id="autocheck_lable">Autocheck</label>
-            <button id="autocheck_on" class="autocheck_btn" onclick="set_autocheck(1)">On</button>
+            <button id="autocheck_on" class="autocheck_btn autocheck_btn_active" onclick="set_autocheck(1)">On</button>
             <button id="autocheck_off" class="autocheck_btn" onclick="set_autocheck(0)">Off</button>
         </div>
     </div>
     
     <div id="board_container">
-        <div id="board"></div>
+        <div id="board">
+            <div id="win_pop_up" class="close_pop_up">
+                <div id="close_pop_up_btn">
+                    <button onclick="close_pop_up(false)">x</button>
+                </div>
+                <div id="pop_up_text">
+                    <h1>YOU WON!</h1>
+                </div>
+                <div id="pop_up_play_again_btn">
+                    <button onclick="close_pop_up(true)">Play Again</button>
+                </div>
+            </div>
+        </div>
+        </div>
     </div>
 
+    
     
 
     <script src="sudoku.js"></script>

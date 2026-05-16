@@ -13,9 +13,6 @@ let cell_on = null;
 let autocheck = true; 
 let difficulty = 0;
 
-// const btnDifficultyList = document.querySelectorAll('#difficulty_buttons button');
-// const btnAutoCheck = document.querySelectorAll("#autocheck button");
-
 var board = [
     ['-','-','-','-','-','-','-','-','-'],
     ['-','-','-','-','-','-','-','-','-'],
@@ -69,6 +66,9 @@ document.addEventListener('keyup', event => {
     if (event.key >= '1' && event.key <= '9'){
         document.getElementById(cell_on).innerText = event.key;
         if (autocheck){check_puzzle();}
+        if(solved()){
+            open_pop_up();
+        }
     }
     else if(event.key == "Delete" || event.key == "Backspace" ){
         document.getElementById(cell_on).innerText = '';
@@ -98,7 +98,6 @@ document.addEventListener('keyup', event => {
 *************************************************************************************************************************************/ 
 
 function remove_old_puzzle(){
-    console.log("remove puzzle")
     for(i = 0; i < 9; i++){
         for(j = 0; j < 9; j++){
             solution[i][j] = '-';
@@ -109,8 +108,17 @@ function remove_old_puzzle(){
     }
 }
 
-function solved(tmp_board){
-    return false;
+function solved(){
+    for(let i = 0; i < 9; i++){
+        for(let j = 0; j < 9; j++){
+            id = i.toString() + '-' + j.toString();
+            if(document.getElementById(id).innerText != solution[i][j]){
+                return false;
+            }
+        }
+    }
+    console.log("solved")
+    return true;
 }
 
 function validMove(r, c, tmp_board){
@@ -342,23 +350,16 @@ function set_autocheck(setting){
     }
 }
 
-// btnAutoCheck.forEach(btnEL => {
-//     btnEL.addEventListener('click', () => {
-//         document.querySelector('.autocheck_active')?.classList.remove('autocheck_active');
-//         btnEL.classList.add('autocheck_active');
-//         if (btnEL.id == "autocheck_on"){
-//             autocheck = true;
-//             check_puzzle();
-//         }
-//         else{
-//             autocheck = false;
-//             let tmpList = document.querySelectorAll(".wrong")
-//             for (let i = 0; i < tmpList.length; i++){
-//                 tmpList[i].classList.remove("wrong");
-//             }
-//         }
-//     })
-// })
+function close_pop_up(play_again){
+    document.getElementById("win_pop_up").classList.add("close_pop_up");
+    if(play_again){
+        newPuzzle();
+    }
+}
+
+function open_pop_up(){
+    document.getElementById("win_pop_up").classList.remove("close_pop_up");
+}
 
 function selectCell(){
     document.querySelector(".highlighted_cell")?.classList.remove("highlighted_cell");

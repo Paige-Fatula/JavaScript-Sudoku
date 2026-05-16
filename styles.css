@@ -29,7 +29,9 @@ body{
     display: flex;
     min-height: 30px;
     width: 500px;
+    min-width: 425px;
     margin: auto auto;
+    gap:5px;
    
 }
 
@@ -43,6 +45,7 @@ body{
 #difficulty_lable{
     border: 1px solid black;
     height: 25px;
+    min-width: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,6 +96,7 @@ body{
 #generate_game button{
     height: 25px;
     width: 80%;
+    min-width: 130px;
     border: 1px solid black;
 }
 
@@ -115,16 +119,15 @@ body{
 }
 
 .autocheck_btn_active{
-    background-color: rgb(149, 149, 156);
-    border-color: black;
+    background-color: rgb(149, 149, 156) ; 
     color: white;
-    border-style: solid;
 }
 
 #board_container{
     /* min-height: 475px; */
     flex: 1;
     justify-items: center;
+    
 
 }
 
@@ -178,4 +181,67 @@ body{
     background-color: rgb(207, 81, 81);
 }
 
+#win_pop_up{
+    position: absolute;
+    left: calc(50vw - 150px);
+    height: 400px;
+    width: 300px;
+    background-color: lightblue;
+    border: 4px solid rgb(147, 189, 202);
+    box-shadow: 5px 5px 5px rgb(175, 175, 180);
+    
+}
 
+#pop_up_text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size:25px;
+    margin-top: 15px;
+    color: whitesmoke;
+}
+
+#close_pop_up_btn{
+    display: flex;
+    justify-content: flex-end;
+    margin:10px;
+}
+
+#close_pop_up_btn button{
+    width:25px;
+    height: 25px;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 2px solid rgb(147, 189, 202);
+    border-radius: 5px;
+}
+
+#close_pop_up_btn button:hover{
+   background-color: rgb(235, 231, 231);
+}
+
+#pop_up_play_again_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+#pop_up_play_again_btn button{
+    height: 40px;
+    width: 120px;
+    background-color: white;
+    border: 2px solid rgb(147, 189, 202);
+    border-radius: 5px;
+}
+
+#pop_up_play_again_btn button:hover{
+    background-color: rgb(235, 231, 231);
+}
+
+.close_pop_up{
+    visibility: hidden;
+}
