@@ -22,6 +22,7 @@
             <div class="dropdown">
                 <button id="difficulty_dropdown_button">Easy</button>
                 <div class="dropdown_options" id="difficulty_options">
+                    <!-- <button onclick="set_difficulty('Super Easy')">Super Easy</button> -->
                     <button onclick="set_difficulty('Easy')">Easy</button>
                     <button onclick="set_difficulty('Medium')">Medium</button>
                     <button onclick="set_difficulty('Hard')">Hard</button>
@@ -37,12 +38,15 @@
             <label id="autocheck_lable">Autocheck</label>
             <button id="autocheck_on" class="autocheck_btn autocheck_btn_active" onclick="set_autocheck(1)">On</button>
             <button id="autocheck_off" class="autocheck_btn" onclick="set_autocheck(0)">Off</button>
+            <button id="pencil" onclick="toggle_pencil()">
+                <img src="static/pencil.png" id="pencil_img" alt="">
+            </button>
         </div>
     </div>
     
     <div id="board_container">
         <div id="board">
-            <div id="win_pop_up" class="close_pop_up">
+            <div id="win_pop_up" class="hide">
                 <div id="close_pop_up_btn">
                     <button onclick="close_pop_up(false)">x</button>
                 </div>

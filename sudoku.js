@@ -3,15 +3,13 @@
     - add comments to code
     - add pencil feature 
     - add number highlight (highlight all cells of the same number)
-    - add win screen
-    - unhighlight cell when clicking off board
-
 */
 
 
 let cell_on = null;
 let autocheck = true; 
 let difficulty = 0;
+let pencil = false;
 
 var board = [
     ['-','-','-','-','-','-','-','-','-'],
@@ -64,15 +62,28 @@ document.addEventListener('keyup', event => {
         return;
     }
     if (event.key >= '1' && event.key <= '9'){
-        document.getElementById(cell_on).innerText = event.key;
-        if (autocheck){check_puzzle();}
-        if(solved()){
-            open_pop_up();
+        if(pencil){
+            edit_note(event.key, cell_on);
         }
+        else{
+            document.getElementById(cell_on + "answer").innerText = event.key;
+            hide_notes(cell_on);
+            if (autocheck){check_puzzle();}
+            if(solved()){
+                open_pop_up();
+            }
+        }
+        
     }
     else if(event.key == "Delete" || event.key == "Backspace" ){
-        document.getElementById(cell_on).innerText = '';
-        if (autocheck){check_puzzle();}
+        if(pencil){
+            erase_note(cell_on);
+        }
+        else{
+            document.getElementById(cell_on + 'answer').innerText = '';
+            show_notes(cell_on);
+            if (autocheck){check_puzzle();}
+        }
     }
     else if(event.key == "Enter"){
         move_highlight("enter");
@@ -91,6 +102,12 @@ document.addEventListener('keyup', event => {
     }
 });
 
+window.onclick = (event) => {
+    if(!event.target.matches('.cell')){
+      document.querySelector(".highlighted_cell")?.classList.remove("highlighted_cell");
+      cell_on = null;
+    }
+}
 
 /************************************************************************************************************************************
     functions related to creating sudoku game
@@ -112,12 +129,14 @@ function solved(){
     for(let i = 0; i < 9; i++){
         for(let j = 0; j < 9; j++){
             id = i.toString() + '-' + j.toString();
-            if(document.getElementById(id).innerText != solution[i][j]){
-                return false;
+            if(document.getElementById(id).classList.contains("game_cell")){
+                if(document.getElementById(id).innerText != solution[i][j]){
+                    return false;
+                }   
             }
         }
     }
-    console.log("solved")
+    console.log("solved");
     return true;
 }
 
@@ -226,6 +245,7 @@ function remove_tiles(tmp_board){
             number_positions[value].push([i,j]);
         }
     }
+    let super_easy = [1,0,0,0,0,0,0,0,0];
     let easy = [3,4,4,5,5,5,6,6,7];
     let medium = [5,5,6,6,6,7,7,8,9];
     let hard = [6,6,6,7,7,7,8,8,9];
@@ -235,6 +255,7 @@ function remove_tiles(tmp_board){
         difficulty_setting = easy;
     }
     else if (difficulty == 1){ difficulty_setting = medium;}
+    else if(difficulty == -1){difficulty_setting = super_easy}
     else { difficulty_setting = hard;}
 
     for(let i = 0; i < 9; i++){
@@ -275,18 +296,29 @@ function setGame(){
     for (let i = 0; i < 9; i++){1
         for (let j = 0; j < 9; j++){
             let cell = document.createElement("div");
+            cell.id = i.toString() + "-" + j.toString();
             cell.classList.add("cell");
             if (board[i][j] != '-'){
                 cell.innerText = board[i][j]
-                cell.classList.add("complete_cell")
+                cell.classList.add("complete_cell");
             }
             else{
                 cell.addEventListener("click", selectCell);
                 cell.addEventListener("keyup",check_puzzle);
                 cell.classList.add("game_cell");
+
+                let note = document.createElement('div');
+                note.id = i.toString() + "-" + j.toString() + "note";
+                note.classList.add("notes")
+                note.innerText = ""
+                cell.appendChild(note);
+
+                let answer = document.createElement('div');
+                answer.classList.add('answer');
+                answer.id = cell.id + "answer";
+                answer.innerText = "";
+                cell.appendChild(answer);
             }
-            
-            cell.id = i.toString() + "-" + j.toString();
             
             if(i == 2 || i == 5){
                 cell.classList.add("bottom_border");
@@ -300,6 +332,7 @@ function setGame(){
             if(j == 3 || j == 6){
                 cell.classList.add("left_border");
             }
+            
             
             document.getElementById("board").appendChild(cell);
         }
@@ -317,6 +350,9 @@ function newPuzzle(){
 function set_difficulty(level){
     document.getElementById("difficulty_dropdown_button").innerText = level;
     switch(level){
+        case "super Easy":
+            difficulty = -1;
+            break;
         case "Easy":
             difficulty = 0;
             break;
@@ -351,14 +387,14 @@ function set_autocheck(setting){
 }
 
 function close_pop_up(play_again){
-    document.getElementById("win_pop_up").classList.add("close_pop_up");
+    document.getElementById("win_pop_up").classList.add("hide");
     if(play_again){
         newPuzzle();
     }
 }
 
 function open_pop_up(){
-    document.getElementById("win_pop_up").classList.remove("close_pop_up");
+    document.getElementById("win_pop_up").classList.remove("hide");
 }
 
 function selectCell(){
@@ -370,12 +406,15 @@ function selectCell(){
 function check_puzzle(){
     for(let i = 0; i < 9; i++){
         for(let j = 0; j < 9; j++){
-            id = i.toString() + '-' + j.toString();
-            if (document.getElementById(id).innerText != '' && document.getElementById(id).innerText != solution[i][j]){
-                document.getElementById(id).classList.add('wrong');
-            }
-            else{
-                document.getElementById(id).classList.remove('wrong');
+            let id = i.toString() + '-' + j.toString();
+            let id_answer = id + 'answer';
+            if(document.getElementById(id).classList.contains('game_cell')){
+                if (document.getElementById(id_answer).innerText != '' && document.getElementById(id_answer).innerText != solution[i][j]){
+                    document.getElementById(id).classList.add('wrong');
+                }
+                else{
+                    document.getElementById(id).classList.remove('wrong');
+                }
             }
         }
     }
@@ -434,4 +473,57 @@ function align_settings_with_board(){
     let cell_width = document.getElementById("0-0").clientWidth;
     let board_width = cell_width*9;
     document.getElementById("game_settings").style.width = board_width.toString() + 'px';
+}
+
+function toggle_pencil(){
+    document.getElementById('pencil_img').classList.toggle('pencil_on');
+    if (pencil){pencil = false}
+    else{pencil = true}
+}
+
+function edit_note(value, cell_id){
+    let oldtext = document.getElementById(cell_id + "note").innerText
+    let newtext = "";
+    let found = false;
+    if(oldtext == ""){
+        document.getElementById(cell_id + "note").innerText = value;
+    }
+    else{
+        for(let i = 0; i < oldtext.length; i++){
+            if(oldtext[i] != value){
+                if(value < oldtext[i] && !found){
+                    newtext = newtext + value;
+                    found = true;
+                }
+                newtext = newtext + oldtext[i]
+            }
+            else{
+                found = true;
+            }
+        }
+        if(!found){
+            newtext = newtext + value;
+        }
+        
+        document.getElementById(cell_id + "note").innerText = newtext
+    }
+}
+
+function erase_note(cell_id){
+    oldtext = document.getElementById(cell_id + "note").innerText
+    if( oldtext != ""){
+        let newtext = "";
+        for(let i = 0; i < oldtext.length - 1; i++){
+            newtext = newtext + oldtext[i];
+        }
+        document.getElementById(cell_id + "note").innerText = newtext;
+    }
+}
+
+function hide_notes(cell_id){
+    document.getElementById(cell_id + 'note').classList.add("hide")
+}
+
+function show_notes(cell_id){
+    document.getElementById(cell_id + 'note').classList.remove("hide")
 }

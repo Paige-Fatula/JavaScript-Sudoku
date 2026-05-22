@@ -105,6 +105,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 5px;
 }
 
 #autocheck_lable{
@@ -115,12 +116,31 @@ body{
     height: 25px;
     width: 30px;
     border: 1px solid black;
-    margin-left: 5px;
+    
 }
 
 .autocheck_btn_active{
     background-color: rgb(149, 149, 156) ; 
     color: white;
+}
+
+#pencil{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25px;
+    width: 30px;
+    border: 1px solid black;
+}
+
+#pencil_img{
+    height: 25px;
+    width: 25px;
+}
+
+.pencil_on{
+    /* filter: brightness(0) saturate(100%) invert(35%) sepia(35%) saturate(4229%) hue-rotate(339deg) brightness(98%) contrast(83%); */
+    filter: brightness(0) saturate(100%) invert(80%) sepia(5%) saturate(3846%) hue-rotate(166deg) brightness(94%) contrast(102%);
 }
 
 #board_container{
@@ -149,19 +169,42 @@ body{
    height: 100%;
    min-width: 47px;
    min-height: 47px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
 }
 
 .game_cell{
    border: 1px solid lightgray;
    background-color: white;
+   
+   justify-content: center;
+
 }
+
+.answer{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    height: 50%;
+}
+
+.notes{
+    display: flex;
+    justify-content: center;
+    font-size: x-small;
+    height: 25%;
+    pointer-events: none;
+}
+
+
 
 .complete_cell{
    border: 1px solid darkgrey;
    background-color: lightgrey;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
 }
 
 .bottom_border{ border-bottom: 1px solid black !important;}
@@ -242,6 +285,6 @@ body{
     background-color: rgb(235, 231, 231);
 }
 
-.close_pop_up{
+.hide{
     visibility: hidden;
 }
